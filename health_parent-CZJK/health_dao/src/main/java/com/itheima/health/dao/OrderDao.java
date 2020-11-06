@@ -53,4 +53,13 @@ public interface OrderDao {
      * @return
      */
     Integer findOrderCountBetweenDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+
+
+    //查看昨天的所有预约信息
+    List<Order> findByDate(String date2);
+
+
+    //删除过期预约信息
+    void delete(Integer id);
 }

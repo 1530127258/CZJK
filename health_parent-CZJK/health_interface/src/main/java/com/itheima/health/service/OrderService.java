@@ -29,4 +29,11 @@ public interface OrderService {
      */
     Map<String, Object> findById(int id);
 
+
+    //定时清理 过期已到诊的用户
+    void delete();
+
+    //定时清理 过期所有的用户
+    void deleteAll();
+
 }

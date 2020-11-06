@@ -88,4 +88,20 @@
     <select id="findOrderCountBetweenDate" parameterType="string" resultType="int">
         select count(1) from t_order where orderDate between #{startDate} and #{endDate}
     </select>
+
+
+
+<!--    查看昨天的所有预约信息-->
+    <select id="findByDate" resultType="Order">
+
+        select * from t_order where orderDate &lt;= #{value};
+
+    </select>
+
+<!--    删除过期预约信息-->
+    <delete id="delete" parameterType="int">
+
+        delete from t_order where id = #{id};
+
+    </delete>
 </mapper>

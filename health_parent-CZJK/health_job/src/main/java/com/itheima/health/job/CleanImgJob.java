@@ -2,6 +2,7 @@ package com.itheima.health.job;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.Utils.QiNiuUtils;
+import com.itheima.health.service.OrderService;
 import com.itheima.health.service.SetmealService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ public class CleanImgJob {
     @Reference
     private SetmealService setmealService;
 
+    @Reference
+    private OrderService orderService;
+
     //@Scheduled(fixedDelay = 1800000,initialDelay = 3000)
     public void cleanImg(){
         log.info("清理7牛上垃圾图片的任务开始执行...........");
@@ -48,5 +52,38 @@ public class CleanImgJob {
             log.error("清理垃圾图片出错了",e);
         }
     }
+
+
+    /**
+     * @author WJY
+     * 定时清理 过期已到诊的用户
+     * 这里是演示3分钟后
+     * 他是先运行 在间隔10秒
+     */
+    @Scheduled(fixedDelay = 10000)
+    public void delete(){
+
+        orderService.delete();
+        System.out.println("我是间隔10秒");
+
+    }
+
+    /**
+     *
+     * initialDelay: 启动时延迟多少毫秒后才执行
+     * fixedDelay: 每间隔多长时间执行
+     *
+     * @author WJY
+     * 定时清理 过期所有的用户
+     * 这里是演示6分钟后
+     * 这是 启动延时10秒再运行  间隔10秒在运行
+     */
+    @Scheduled(initialDelay = 10000 ,fixedDelay = 10000)
+    public void deleteAll(){
+
+        orderService.deleteAll();
+        System.out.println("我是间隔5秒");
+    }
+
 }
 

@@ -14,9 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -121,4 +119,63 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findById4Detail(id);
     }
 
+
+
+    /**
+     * @author WJY
+     * 定时清理 过期已到诊的用户
+     */
+    @Override
+    public void delete() {
+
+        //获取昨天的日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        calendar.add(calendar.DATE,-1);
+        String date2= sdf.format(calendar.getTime());
+
+        //查看昨天的所有预约信息
+        List<Order> list = orderDao.findByDate(date2);
+
+        //判断是否为空
+        if(null != list){
+            //遍历集合,
+            //取出id删除
+            for (Order order : list) {
+                //判断是否已到诊
+                //删除已到诊的
+                if(order.getOrderStatus().equals("已到诊")){
+                    //已到诊,则删除
+                    orderDao.delete(order.getId());
+                }
+            }
+        }
+    }
+
+    /**
+     * @author WJY
+     * 定时清理 过期所有的用户
+     */
+    @Override
+    public void deleteAll() {
+        //获取昨天的日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        calendar.add(calendar.DATE,-1);
+        String date2= sdf.format(calendar.getTime());
+
+        //查看昨天的所有预约信息
+        List<Order> list = orderDao.findByDate(date2);
+
+        //判断是否为空
+        if(null != list){
+            //遍历集合,
+            //取出id删除
+            for (Order order : list) {
+                    orderDao.delete(order.getId());
+            }
+        }
+    }
 }

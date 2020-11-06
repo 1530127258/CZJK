@@ -5,12 +5,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.IOException;
 
 /**
- * <p>
- *
- * </p>
- *
- * @author: Eric
- * @since: 2020/10/26
+ * @author WJY
+ * 定时清理
  */
 public class JobApplication {
     public static void main(String[] args) throws IOException {
