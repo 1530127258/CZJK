@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.health.dao.MenuDao">
+    <select id="getMenue" resultMap="menuMap">
+  SELECT m.id, m.`path`,m.`name`,m.`icon` FROM
+       t_user u LEFT JOIN t_user_role ur ON u.id=ur.user_id
+		LEFT JOIN t_role r ON r.id=ur.role_id
+		LEFT JOIN t_role_menu rm ON r.id=rm.role_id
+		LEFT JOIN t_menu m ON m.id=rm.menu_id
+  WHERE u.`id` = #{userId} AND m.parentMenuId is NULL
+    </select>
+
+    <resultMap id="menuMap" type="menu">
+        <id property="id" column="id"/>
+        <result property="path" column="path"/>
+        <result property="title" column="name"/>
+        <result property="icon" column="icon"/>
+        <collection property="children" ofType="menu" select="findMenuListById" column="id"/>
+    </resultMap>
+
+    <select id="findMenuListById" parameterType="int" resultType="menu">
+      SELECT path,NAME title,linkUrl FROM t_menu WHERE parentMenuId = #{id}
+    </select>
+</mapper>
