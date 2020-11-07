@@ -1,7 +1,7 @@
-package com.itheima.controller;
+package com.itheima.health.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.itheima.health.MessageConstant;
+import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.Menu;
 import com.itheima.health.service.MenueService;
@@ -38,7 +38,7 @@ public class MenueController {
     public Result getMenue(String username){
         try {
             //根据用户名查询用户
-            com.itheima.pojo.User user = userService.findUserByUsername(username);
+            com.itheima.health.pojo.User user = userService.findUserByUsername(username);
             //获取用户id
             Integer userId = user.getId();
             //获取菜单列表
@@ -46,7 +46,7 @@ public class MenueController {
             return new Result(true,MessageConstant.GET_MENU_SUCCESS,menuList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(true,MessageConstant.GET_MENU_FAIL);
+            return new Result(true, MessageConstant.GET_MENU_FAIL);
         }
     }
 }

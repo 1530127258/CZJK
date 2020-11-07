@@ -26,15 +26,19 @@
                         <span class="svg-container svg-container_login">
                           <span class="user"></span>
                         </span>
-                        <input type="text" name="username" placeholder="请输入用户名" value="admin" />
+                        <input type="text" name="username" placeholder="请输入用户名"onblur="checkUsername(this.value)" value="admin"/>
+                          <!--提示信息就可以在这儿里显示-->
+                          <span id="usernamespan"></span>
                       </div>
                       <div>
                         <span class="svg-container">
                           <span class="username"></span>
                         </span>
-                        <input type="password" name="password" placeholder="请输入密码" value="1234"/>
+                        <input type="password" name="password" placeholder="请输入密码" value="1234"onblur="showTips(this.value)"/>
+                          <!--提示信息就可以在这儿里显示-->
+                          <span id="password"></span>
                       </div>
-                      <input type="submit" style="width:100%;margin-bottom:30px;" value="登录"></input>
+                      <input type="submit" style="width:100%;margin-bottom:30px;" value="登录" ></input>
                 </form>
                 </div>
               </div>
@@ -43,4 +47,40 @@
     <!-- 引入组件库 -->
     <script src="js/vue.js"></script>
     <script src="plugins/elementui/index.js"></script>
+
+    <script>
+        var spanEl = document.getElementById("password");
+        // 获得焦点，进行提示
+        function showTips(password) {
+            // 正则匹配
+            // 只密码规则：4-20位字母数字组合：
+            var reg = /^[A-Za-z0-9]{4,10}$/;
+            // 匹配输入的内容
+            var flag = reg.test(password);
+
+            if(flag){
+                spanEl.innerHTML = "<font color='green'>密码正确</font>"
+            }else{
+                spanEl.innerHTML = "<font color='red'>密码格式错误:4-10位字母数字组合</font>"
+            }
+        }
+
+
+        var spanEle = document.getElementById("usernamespan");
+        // 失去焦点，检查合法
+        function checkUsername(username) {
+            // 正则匹配
+            // 只能由英文字母和数字组成，长度为4～16个字符，并且以英文字母开头
+            var reg = /^[a-zA-Z][a-zA-Z0-9]{3,15}$/;
+            // 匹配输入的内容
+            var flag = reg.test(username);
+
+            if(flag){
+                spanEle.innerHTML = "<img src=\"img/gou.png\" height=\"25\" width=\"30\"/>"
+            }else{
+                spanEle.innerHTML = "<font color='red'>非法:字母/数字/长度4～16/字母开头</font>"
+            }
+
+        }
+    </script>
 </html>
