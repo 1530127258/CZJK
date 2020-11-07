@@ -98,7 +98,7 @@
 		   //钩子函数
         created: function () {
             //1.发送请求，获取用户登录名
-            axios.get("/user/getUserName.do").then(res => {
+            axios.get("/user/getUsername.do").then(res => {
                 if (res.data.flag) {
                     this.username = res.data.data;
                     //2.获取菜单列表
