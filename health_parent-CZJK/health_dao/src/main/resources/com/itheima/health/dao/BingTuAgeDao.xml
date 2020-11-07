@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace属性：名称空间， 写接口的全限定名-->
+<mapper namespace="com.itheima.health.dao.BingTuAgeDao">
+
+    <!--select标签用于插叙；  id属性值就是接口的方法名，
+        resultType ：返回值的类型
+                    如果是集合，写泛型即可；
+                    下面写我的方法名
+    -->
+    <select id="BingTu" resultType="map">
+        <!-- 写我的SQL语句-->
+        SELECT (CASE
+        WHEN a.age IS NULL THEN 'unknown'
+        WHEN a.age &lt; 18 THEN '0-18岁'
+        WHEN a.age BETWEEN 18 AND 30 THEN '18-30岁'
+        WHEN a.age BETWEEN 31 AND 45 THEN '30-45岁'
+        WHEN a.age &gt; 45 THEN '45岁以上'
+        END) as name,
+        COUNT(*) 'value'
+        FROM (SELECT NOW() AS "时间",birthday,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age FROM t_member  )a
+        GROUP BY name
+    </select>
+
+
+
+    <select id="BingTuBySex" resultType="map">
+      SELECT (CASE
+        WHEN sex IS NULL THEN '未定义'
+        WHEN sex = 1 THEN '男'
+        WHEN sex=2  THEN '女'
+
+        END) as name,count(1) value FROM t_member GROUP BY sex
+
+    </select>
+</mapper>

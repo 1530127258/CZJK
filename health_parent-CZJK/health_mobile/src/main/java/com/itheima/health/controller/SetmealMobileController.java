@@ -1,14 +1,18 @@
 package com.itheima.health.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.itheima.health.Utils.QiNiuUtils;
 import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.Setmeal;
 import com.itheima.health.service.SetmealService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 
@@ -27,20 +31,35 @@ public class SetmealMobileController {
     @Reference
     private SetmealService setmealService;
 
+    @Autowired
+    private JedisPool jedisPool;
+
     /**
      * 套餐列表
      * @return
      */
     @GetMapping("/getSetmeal")
     public Result getSetmeal(){
-        // 套餐列表
-        List<Setmeal> setmealList = setmealService.findAll();
-        // 前端需要显示图片，要拼接图片的完整路径 java8 stream流操作
-        setmealList.forEach(s -> s.setImg(QiNiuUtils.DOMAIN+s.getImg()));
-        //for (Setmeal s : setmealList) {
-        //    s.setImg(QiNiuUtils.DOMAIN+ s.getImg());
-        //}
-        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,setmealList);
+
+
+        Jedis jedis = jedisPool.getResource();
+        String setmeal = jedis.get("setmeal");
+        if (setmeal==null){
+            //查询所有套餐
+            List<Setmeal> list =setmealService.findAll();
+            //处理图片路径
+            list.forEach(s->{
+                s.setImg(QiNiuUtils.DOMAIN+s.getImg());
+            });
+            String jsonString = JSON.toJSONString(list);
+            jedisPool.getResource().set("setmeal",jsonString);
+            jedis.close();
+            return new Result(true,"上传成功",list);
+        }else {
+            List list = JSON.parseObject(setmeal, List.class);
+            jedis.close();
+            return new Result(true,"成功",list);
+        }
     }
 
     /**
@@ -48,11 +67,24 @@ public class SetmealMobileController {
      */
     @GetMapping("/findDetailById")
     public Result findDetailById(int id){
-        // 调用服务查询
-        Setmeal s = setmealService.findDetailById(id);
-        // 图片的完整路径
-        s.setImg(QiNiuUtils.DOMAIN+s.getImg());
-        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,s);
+        Jedis jedis = jedisPool.getResource();
+        String s = jedis.get("setmealDetail{id}");
+
+        if (s==null){
+            Setmeal setmeal=setmealService.findDetailById(id);
+            //获得图片路径
+            setmeal.setImg( QiNiuUtils.DOMAIN+setmeal.getImg());
+            String s1 = JSON.toJSONString(setmeal);
+            jedisPool.getResource().set("setmealDetail"+id+"",s1);
+            jedis.close();
+            return new Result(true,"成功了o",setmeal);
+
+        }else{
+            Setmeal setmeal = JSON.parseObject(s, Setmeal.class);
+            jedis.close();
+            return new Result(true,"成功",setmeal);
+
+        }
     }
 
     /**
