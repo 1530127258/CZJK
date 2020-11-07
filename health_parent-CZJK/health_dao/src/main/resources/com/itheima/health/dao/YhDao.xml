@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace属性：名称空间， 写接口的全限定名-->
+<mapper namespace="com.itheima.health.dao.YhDao">
+
+    <!--select标签用于插叙；  id属性值就是接口的方法名，
+        resultType ：返回值的类型
+                    如果是集合，写泛型即可；
+                    下面写我的方法名
+    -->
+   <insert id="addYh" useGeneratedKeys="true" keyProperty="id">
+       insert  into t_user (birthday,gender,username,password,remark,station,telephone)
+       values (#{birthday},#{gender},#{username},#{password},#{remark},#{station},#{telephone})
+   </insert>
+
+    <!--   //调用方法,关联用户和角色-->
+    <insert id="addUserRole">
+
+    insert into t_user_role (user_id,role_id)
+    values (#{user_id},#{role_id})
+    </insert>
+
+  <!--  //查询用户,并分页-->
+    <select id="fingYh" resultType="user">
+        select * from t_user
+        <where>
+            <if test="value!=null">
+                username like #{queryString} or telephone like #{telephone}
+            </if>
+        </where>
+    </select>
+
+    <!--编辑用户,之回显数据-->
+    <select id="findById" resultType="user">
+        select * from t_user where id=#{id}
+    </select>
+
+    <!--findRoleIdsByUserId-->
+    <select id="findRoleIdsByUserId" resultType="int">
+        select  role_id from t_user_role where user_id=#{id}
+    </select>
+
+    <!--   //编辑更新界面信息-->
+    <update id="update" >
+        update t_user set
+        birthday=#{birthday},
+        gender=#{gender},
+        username=#{username},
+        password=#{password},
+        remark=#{remark},
+        station=#{station},
+        telephone=#{telephone}
+        where id=#{id}
+    </update>
+
+    <!-- //删除原有角色信息id-->
+    <delete id="deleteRoleIds">
+
+    delete from t_user_role where user_id=#{id}
+    </delete>
+
+    <delete id="deleteYhById">
+        delete from t_user where id=#{id}
+    </delete>
+
+    <select id="findAll" resultType="role">
+        select * from t_role
+    </select>
+
+    <select id="findRole" resultType="int">
+        select count(1) from t_user_role where user_id=#{id}
+    </select>
+
+    <select id="fingUser" resultType="int">
+        select count(1) from t_user where username=#{username}
+    </select>
+</mapper>
