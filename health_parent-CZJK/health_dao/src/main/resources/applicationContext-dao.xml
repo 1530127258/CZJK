@@ -6,7 +6,7 @@
     <!-- 数据源 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/czjk"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/health102"/>
         <property name="username" value="root"/>
         <property name="password" value="root"/>
     </bean>

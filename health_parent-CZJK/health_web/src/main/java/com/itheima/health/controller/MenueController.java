@@ -8,10 +8,8 @@ import com.itheima.health.service.MenueService;
 import com.itheima.health.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,4 +47,13 @@ public class MenueController {
             return new Result(true, MessageConstant.GET_MENU_FAIL);
         }
     }
+
+
+    //查询所有菜单信息
+    @GetMapping("/findAllMenu")
+    public Result findAllMenu() {
+        List<Menu> data2 = menueService.findAllMenu();
+        return new Result(true, "成功", data2);
+    }
+
 }

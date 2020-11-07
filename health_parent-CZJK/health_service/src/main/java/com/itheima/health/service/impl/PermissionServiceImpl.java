@@ -121,4 +121,10 @@ public class PermissionServiceImpl implements PermissionService {
 
         return cnt > 0;
     }
+
+    //查询所有权限信息
+    @Override
+    public List<Permission> findAll() {
+        return permissionDao.findAll();
+    }
 }

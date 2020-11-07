@@ -11,5 +11,9 @@ import java.util.List;
  */
 public interface MenuDao {
     List<Menu> getMenue(Integer userId);
+    //查询一级菜单
+    List<Menu> findFirstMenu();
 
+    //查询二级菜单
+    List<Menu> findSecondMenu();
 }

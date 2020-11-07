@@ -23,4 +23,15 @@
     <select id="findMenuListById" parameterType="int" resultType="menu">
       SELECT path,NAME title,linkUrl FROM t_menu WHERE parentMenuId = #{id}
     </select>
+
+    <!--查询一级菜单-->
+    <select id="findFirstMenu" resultType="com.itheima.health.pojo.Menu">
+        select id,name as title,linkUrl,path,priority,description,icon,parentMenuId,level from t_menu where level =1
+
+    </select>
+    <!--查询二级菜单-->
+    <select id="findSecondMenu" resultType="com.itheima.health.pojo.Menu">
+
+        select id,name as title,linkUrl,path,priority,description,icon,parentMenuId,level from t_menu where level=2
+    </select>
 </mapper>

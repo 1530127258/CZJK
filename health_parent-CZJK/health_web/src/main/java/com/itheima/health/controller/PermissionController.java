@@ -2,12 +2,15 @@ package com.itheima.health.controller;
 
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.Permission;
 import com.itheima.health.service.PermissionService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/permission")
@@ -92,6 +95,12 @@ public class PermissionController {
         }else{
             return new Result(flag,"编辑失败,权限名称或权限关键字可能重名");
         }
+    }
+    //查询所有权限信息
+    @GetMapping("/findAll")
+    public Result findAll() {
+        List<Permission> permissionList = permissionService.findAll();
+        return new Result(true, MessageConstant.QUERY_PERMISSION_SUCCESS, permissionList);
     }
 
 }

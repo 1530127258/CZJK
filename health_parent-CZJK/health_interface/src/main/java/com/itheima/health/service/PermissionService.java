@@ -4,6 +4,8 @@ import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.pojo.Permission;
 
+import java.util.List;
+
 
 public interface PermissionService {
 
@@ -25,4 +27,6 @@ public interface PermissionService {
 
     //编辑修改提交
     boolean update(Permission permission);
+
+    List<Permission> findAll();
 }

@@ -52,7 +52,7 @@
 
 
 <!--    查所有-->
-    <select id="findAll" resultType="permission">
+    <select id="findAll" resultType="com.itheima.health.pojo.Permission">
 
         select * from t_permission;
 

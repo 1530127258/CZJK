@@ -1,10 +1,8 @@
 package com.itheima.health.service;
 
 import com.itheima.health.pojo.Menu;
-import com.itheima.health.pojo.User;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author: admin
@@ -13,4 +11,6 @@ import java.util.Map;
  */
 public interface MenueService {
     List<Menu> getMenue(Integer userId);
+    //查询所有菜单信息
+    List<Menu> findAllMenu();
 }
