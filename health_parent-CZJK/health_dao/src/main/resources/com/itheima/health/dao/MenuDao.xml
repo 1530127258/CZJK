@@ -34,4 +34,70 @@
 
         select id,name as title,linkUrl,path,priority,description,icon,parentMenuId,level from t_menu where level=2
     </select>
+
+
+    <!--=========================菜单管理====================-->
+
+    <!--获取父菜单数据-->
+    <select id="getParentMenu" resultType="Menu">
+        select id ,name as title,linkUrl,path,priority,description,icon,parentMenuId
+        from t_menu where level = 1
+    </select>
+
+    <!--获取子菜单数据-->
+    <select id="getChildrenMenu" resultType="Menu">
+        select id ,name as title,linkUrl,path,priority,description,icon,parentMenuId from t_menu where level = 2
+    </select>
+
+    <!--分页条件查询-->
+    <select id="findPage" parameterType="string" resultType="Menu">
+        select id ,name as title,linkUrl,path,priority,description,icon,parentMenuId from t_menu
+        <where>
+            <if test="value != null and value.length>0">
+                name like #{queryString} or path like #{queryString}
+            </if>
+        </where>
+    </select>
+
+    <!--添加父菜单-->
+    <insert id="addParent" parameterType="Menu">
+        insert into t_menu(name ,linkUrl,path,priority,description,icon,parentMenuId,level)
+        values (#{title},#{linkUrl},#{path},#{priority},#{description},#{icon},#{parentMenuId},1)
+    </insert>
+
+    <!--添加子菜单-->
+    <insert id="addChildren" parameterType="Menu">
+        insert into t_menu(name ,linkUrl,path,priority,description,icon,parentMenuId,level)
+        values (#{title},#{linkUrl},#{path},#{priority},#{description},#{icon},#{parentMenuId},2)
+    </insert>
+
+    <!--根据id删除菜单-->
+    <delete id="deleteById" parameterType="int">
+        delete from t_menu where id=#{menuId}
+    </delete>
+
+    <!--根据id查询菜单-->
+    <select id="findById" parameterType="int" resultType="Menu">
+        select id ,name as title,linkUrl,path,priority,description,icon,parentMenuId from t_menu where id=#{id}
+    </select>
+
+    <!--编辑菜单-->
+    <update id="update" parameterType="Menu">
+        update t_menu
+        set
+            name =#{title},
+            linkUrl=#{linkUrl},
+            path=#{path},
+            priority=#{priority},
+            description=#{description},
+            icon=#{icon},
+            parentMenuId=#{parentMenuId}
+        where id=#{id}
+    </update>
+
+    <!--根据id判断父菜单是否包含子菜单-->
+    <select id="findByParent" parameterType="int" resultType="int">
+        select count(1) from t_menu where parentMenuId = #{menuId}
+    </select>
+
 </mapper>
