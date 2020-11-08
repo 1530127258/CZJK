@@ -68,7 +68,7 @@ public class SetmealMobileController {
     @GetMapping("/findDetailById")
     public Result findDetailById(int id){
         Jedis jedis = jedisPool.getResource();
-        String s = jedis.get("setmealDetail{id}");
+        String s = jedis.get("setmealDetail"+id+"");
 
         if (s==null){
             Setmeal setmeal=setmealService.findDetailById(id);

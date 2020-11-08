@@ -14,6 +14,8 @@ import com.itheima.health.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,9 @@ public class SetmealServiceImpl implements SetmealService {
 
     @Autowired
     private SetmealDao setmealDao;
+
+    @Autowired
+    private JedisPool jedisPool;
 
     /**
      * 添加套餐
@@ -108,6 +113,12 @@ public class SetmealServiceImpl implements SetmealService {
                 setmealDao.addSetmealCheckGroup(setmeal.getId(), checkgroupId);
             }
         }
+
+        Jedis jedis = jedisPool.getResource();
+        Integer id = setmeal.getId();
+        jedis.del("setmealDetail"+id+"");
+        jedis.del("getSetmeal");
+        jedis.close();
     }
 
     /**
@@ -128,6 +139,12 @@ public class SetmealServiceImpl implements SetmealService {
         setmealDao.deleteSetmealCheckGroup(id);
         // 再删除套餐
         setmealDao.deleteById(id);
+
+
+        Jedis jedis = jedisPool.getResource();
+        jedis.del("setmealDetail{id}");
+        jedis.del("getSetmeal");
+        jedis.close();
     }
 
     /**
