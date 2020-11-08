@@ -95,8 +95,9 @@
                     <template slot-scope="scope">
                         <span>{{ scope.row.gender == '0' ? '不限' : scope.row.gender == '1' ? '男' : '女'}}</span>
                     </template>
+
                 </el-table-column>
-                <el-table-column prop="birthday" label="生日" align="left" width="180" ></el-table-column>
+                <el-table-column prop="birthday" label="生日"  align="left" width="180" ></el-table-column>
                 <el-table-column prop="telephone" label="联系电话" align="left" width="200" ></el-table-column>
                 <el-table-column prop="remark" label="备注" align="left" ></el-table-column>
                 <el-table-column label="操作" align="left" width="180">
@@ -122,22 +123,22 @@
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
-                                <el-form  ref="dataAddForm" :rules="rules" label-position="right" label-width="100px">
+                                <el-form label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="用户名" prop="name">
-                                                <el-input v-model="formData.username"></el-input>
+                                            <el-form-item label="用户名">
+                                                <el-input v-model="formData.username"/>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :span="12">
-                                            <el-form-item label="密码" prop="password">
+                                            <el-form-item label="密码">
                                                 <el-input v-model="formData.password"/>
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="适用性别" prop="sex">
+                                            <el-form-item label="适用性别">
                                                 <el-select v-model="formData.gender">
 
                                                     <el-option label="男" value="1"></el-option>
@@ -149,7 +150,7 @@
                                     </el-row>
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="生日">
+                                            <el-form-item label="生日" >
                                                 <el-input placeholder="yyyy-MM-dd" v-model="formData.birthday"/>
                                             </el-form-item>
                                         </el-col>
@@ -176,9 +177,9 @@
                                         <thead>
                                         <tr>
                                             <th>选择</th>
-                                         <!--   <th>角色编码</th>-->
+                                            <!--   <th>角色编码</th>-->
                                             <th>角色名称</th>
-                                      <!--      <th>角色说明</th>-->
+                                            <!--      <th>角色说明</th>-->
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -186,9 +187,9 @@
                                             <td>
                                                 <input :id="c.id" v-model="checkgroupIds" type="checkbox" :value="c.id">
                                             </td>
-                                          <!--  <td><label :for="c.id">{{c.code}}</label></td>-->
+                                            <!--  <td><label :for="c.id">{{c.code}}</label></td>-->
                                             <td><label :for="c.id">{{c.name}}</label></td>
-                                       <!--     <td><label :for="c.id">{{c.remark}}</label></td>-->
+                                            <!--     <td><label :for="c.id">{{c.remark}}</label></td>-->
                                         </tr>
                                         </tbody>
                                     </table>
@@ -208,7 +209,7 @@
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="用户信息" name="first">
-                                <el-form label-position="right" :rules="rules" label-width="100px">
+                                <el-form label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
                                             <el-form-item label="用户名">
@@ -216,14 +217,14 @@
                                             </el-form-item>
                                         </el-col>
                                         <el-col :span="12">
-                                            <el-form-item label="密码" prop="password">
+                                            <el-form-item label="密码">
                                                 <el-input v-model="formData.gender"/>
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="适用性别" prop="sex">
+                                            <el-form-item label="适用性别">
                                                 <el-select v-model="formData.sex">
 
                                                     <el-option label="男" value="1"></el-option>
@@ -315,12 +316,7 @@
             tableData: [],//添加表单窗口中检查组列表数据
             checkgroupIds: [],//添加表单窗口中检查组复选框对应id,选中的检查组的id
             dialogFormVisible: false,//控制添加窗口显示/隐藏
-            dialogFormVisible4Edit: false,//控制编辑窗口显示/隐藏
-            rules: {//校验规则
-                name: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
-                password: [{required: true, message: '密码不能为空', trigger: 'blur'}],
-                sex: [{required: true, message: '请选择性别', trigger: 'blur'}]
-            }
+            dialogFormVisible4Edit: false//控制编辑窗口显示/隐藏
         },
         created() {
             this.findPage();
@@ -371,7 +367,7 @@
                         // 套餐信息回显
                         this.formData = res.data.data;
                         // 图片回显
-                       // this.imageUrl = res.data.data.domain + this.formData.img;
+                        // this.imageUrl = res.data.data.domain + this.formData.img;
                         // 加载检查组列表数据
                         axios.get('/Yh/findAll.do').then(res1 => {
                             if(res1.data.flag){
@@ -445,20 +441,15 @@
             },
             //添加
             handleAdd() {
-                this.$refs['dataAddForm'].validate((valid) => {
-                    if (valid) {
-
-                        axios.post('/Yh/add.do?checkgroupIds=' + this.checkgroupIds, this.formData).then(res => {
-                            this.$message({
-                                message: res.data.message,
-                                type: res.data.flag ? "success" : "error"
-                            });
-                            if (res.data.flag) {
-                                // 关闭新增的窗口
-                                this.dialogFormVisible = false;
-                                this.findPage();
-                            }
-                        })
+                axios.post('/Yh/add.do?checkgroupIds=' + this.checkgroupIds, this.formData).then(res => {
+                    this.$message({
+                        message: res.data.message,
+                        type: res.data.flag?"success":"error"
+                    });
+                    if(res.data.flag){
+                        // 关闭新增的窗口
+                        this.dialogFormVisible = false;
+                        this.findPage();
                     }
                 })
             },

@@ -56,11 +56,6 @@ public class SetmealServiceImpl implements SetmealService {
                 setmealDao.addSetmealCheckGroup(setmealId,checkgroupId);
             }
         }
-        Jedis jedis = jedisPool.getResource();
-
-        jedis.del("setmeal");
-        jedis.close();
-
         return setmealId;
     }
 
@@ -118,10 +113,11 @@ public class SetmealServiceImpl implements SetmealService {
                 setmealDao.addSetmealCheckGroup(setmeal.getId(), checkgroupId);
             }
         }
+
         Jedis jedis = jedisPool.getResource();
         Integer id = setmeal.getId();
         jedis.del("setmealDetail"+id+"");
-        jedis.del("setmeal");
+        jedis.del("getSetmeal");
         jedis.close();
     }
 
@@ -144,9 +140,10 @@ public class SetmealServiceImpl implements SetmealService {
         // 再删除套餐
         setmealDao.deleteById(id);
 
+
         Jedis jedis = jedisPool.getResource();
         jedis.del("setmealDetail{id}");
-        jedis.del("setmeal");
+        jedis.del("getSetmeal");
         jedis.close();
     }
 

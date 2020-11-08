@@ -8,6 +8,8 @@ import com.itheima.health.exception.MyException;
 import com.itheima.health.pojo.Role;
 import com.itheima.health.pojo.User;
 import com.itheima.health.service.YhService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,10 +22,14 @@ public class YhController {
     @Reference
     private YhService yhService;
 
+    @Autowired
+    private BCryptPasswordEncoder bCry;
+
     //添加用户
     @PostMapping("/add")
     public Result addYh(@RequestBody User user,Integer[] checkgroupIds) {
 
+        user.setPassword(bCry.encode(user.getPassword().trim()));
        int i= yhService.fingUser(user);
        if (i>0){
            return new Result(false,"用户名已存在,请重新添加");
