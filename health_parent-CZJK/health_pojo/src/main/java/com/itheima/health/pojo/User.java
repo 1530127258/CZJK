@@ -1,5 +1,7 @@
 package com.itheima.health.pojo;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,6 +15,7 @@ public class User implements Serializable{
     private Date birthday; // 生日
     private String gender; // 性别
     private String username; // 用户名，唯一
+    @JSONField(serialize = false)
     private String password; // 密码
     private String remark; // 备注
     private String station; // 状态
