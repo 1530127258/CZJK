@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.itheima.health.dao.PermissionDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
+import com.itheima.health.exception.MyException;
 import com.itheima.health.pojo.Permission;
 import com.itheima.health.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,9 +82,16 @@ public class PermissionServiceImpl implements PermissionService {
     public boolean deleteById(int id) {
 
         //调用Dao
-        int cnt = permissionDao.deleteById(id);
+        //查看该id是否被角色使用
+        int count = permissionDao.findCountByCheckItemId(id);
 
-        return cnt > 0;
+        if(count > 0){
+            // 被使用了，则要报错
+            throw new MyException("该权限已经被使用了，不能删除!");
+        }
+        int i = permissionDao.deleteById(id);
+
+        return i > 0;
     }
 
 

@@ -57,4 +57,12 @@
         select * from t_permission;
 
     </select>
+
+
+    <!--    查看该id是否被角色使用-->
+    <select id="findCountByCheckItemId" parameterType="int" resultType="int">
+
+        select count(1) from t_role_permission where permission_id = #{id};
+
+    </select>
 </mapper>

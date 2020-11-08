@@ -29,4 +29,8 @@ public interface PermissionDao {
 
     //查所有
     List<Permission> findAll();
+
+
+    //查看该id是否被角色使用
+    int findCountByCheckItemId(int id);
 }
