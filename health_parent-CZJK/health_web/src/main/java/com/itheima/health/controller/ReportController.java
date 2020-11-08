@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -81,6 +82,36 @@ public class ReportController {
         resultMap.put("memberCount",memberCount);
         return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS,resultMap);
     }
+
+
+    //获得指定时间段会员数量
+    @PostMapping("/getMemberReport2")
+    public Result getMemberReport2(String value1, String value2) throws Exception {
+        List<String> months = new ArrayList<>();
+        //定义日历格式
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
+        System.out.println(sdf);
+        Date date1 = sdf.parse(value1);
+        Date date2 = sdf.parse(value2);
+
+        Calendar calendar = Calendar.getInstance();
+        //设置起始时间
+        calendar.setTime(date1);
+        while (calendar.getTime().before(date2)) {
+            String month = sdf.format(calendar.getTime());
+            months.add(month);
+            calendar.add(Calendar.MONTH,1);
+        }
+
+        List<Integer> memberCount=memberService.getMemberReport(months);
+        //定义封装数据的模型
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        dataMap.put("months", months);
+        dataMap.put("memberCount", memberCount);
+        return new Result(true, MessageConstant.GET_BUSINESS_REPORT_SUCCESS, dataMap);
+    }
+
+
 
     /**
      * 套餐预约占比
@@ -181,4 +212,7 @@ public class ReportController {
         }
         return null;
     }
+
+
+
 }

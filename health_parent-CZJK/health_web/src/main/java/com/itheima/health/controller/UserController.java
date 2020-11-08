@@ -30,4 +30,15 @@ public class UserController {
         System.out.println("登陆的用户名:" + user.getUsername());
         return new Result(true, MessageConstant.GET_USERNAME_SUCCESS,user.getUsername());
     }
+
+    @RequestMapping("/loginSuccess")
+    public Result loginSuccess() {
+        //返回
+        return new Result(true, "登录成功");
+    }
+    @RequestMapping("/loginFail")
+    public Result loginFail() {
+        //返回
+        return new Result(false, "用户名或密码错误");
+    }
 }

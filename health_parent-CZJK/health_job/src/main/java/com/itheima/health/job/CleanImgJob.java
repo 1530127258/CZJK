@@ -58,7 +58,8 @@ public class CleanImgJob {
      * @author WJY
      * 定时清理 过期已到诊的用户
      * 这里是演示3分钟后
-     * 他是先运行 在间隔10秒
+     * 他是先运行 在间隔10秒(间隔一天24小时/12小时)
+     * 300000五分钟
      */
     @Scheduled(fixedDelay = 10000)
     public void delete(){
@@ -76,7 +77,8 @@ public class CleanImgJob {
      * @author WJY
      * 定时清理 过期所有的用户
      * 这里是演示6分钟后
-     * 这是 启动延时10秒再运行  间隔10秒在运行
+     * 这是 启动延时10秒(过几天)再运行 间隔1秒在运行
+     *600000十分钟
      */
     @Scheduled(initialDelay = 10000 ,fixedDelay = 10000)
     public void deleteAll(){
