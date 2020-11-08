@@ -72,9 +72,7 @@
 <body class="hold-transition">
 <div id="app">
     <div class="content-header">
-        <h1>用户管理
-            <small>用户管理</small>
-        </h1>
+        <h1>用户管理<small>用户管理</small></h1>
         <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>用户管理</el-breadcrumb-item>
@@ -90,8 +88,8 @@
                 <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
             </div>
             <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
-                <el-table-column type="index" align="left" label="序号" width="100"></el-table-column>
-                <el-table-column prop="username" label="用户名" width="200"></el-table-column>
+                <el-table-column type="index" align="left"  label="序号"  width="100"></el-table-column>
+                <el-table-column prop="username" label="用户名"  width="200" ></el-table-column>
 
                 <el-table-column label="性别" align="left" width="100">
                     <template slot-scope="scope">
@@ -99,9 +97,9 @@
                     </template>
 
                 </el-table-column>
-                <el-table-column prop="birthday" label="生日" align="left" width="180"></el-table-column>
-                <el-table-column prop="telephone" label="联系电话" align="left" width="200"></el-table-column>
-                <el-table-column prop="remark" label="备注" align="left"></el-table-column>
+                <el-table-column prop="birthday" label="生日"  align="left" width="180" ></el-table-column>
+                <el-table-column prop="telephone" label="联系电话" align="left" width="200" ></el-table-column>
+                <el-table-column prop="remark" label="备注" align="left" ></el-table-column>
                 <el-table-column label="操作" align="left" width="180">
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
@@ -125,16 +123,15 @@
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
-                                <el-form ref="formData" :model="formData" :rules="rules" label-position="right"
-                                         label-width="100px">
+                                <el-form label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="用户名" prop="username">
+                                            <el-form-item label="用户名">
                                                 <el-input v-model="formData.username"/>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :span="12">
-                                            <el-form-item label="密码" prop="password">
+                                            <el-form-item label="密码">
                                                 <el-input v-model="formData.password"/>
                                             </el-form-item>
                                         </el-col>
@@ -153,7 +150,7 @@
                                     </el-row>
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="生日">
+                                            <el-form-item label="生日" >
                                                 <el-input placeholder="yyyy-MM-dd" v-model="formData.birthday"/>
                                             </el-form-item>
                                         </el-col>
@@ -212,10 +209,10 @@
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="用户信息" name="first">
-                                <el-form ref="formData" :model="formData" :rules="rules" label-position="right" label-width="100px">
+                                <el-form label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="用户名" prop="username">
+                                            <el-form-item label="用户名">
                                                 <el-input v-model="formData.username"/>
                                             </el-form-item>
                                         </el-col>
@@ -319,18 +316,14 @@
             tableData: [],//添加表单窗口中检查组列表数据
             checkgroupIds: [],//添加表单窗口中检查组复选框对应id,选中的检查组的id
             dialogFormVisible: false,//控制添加窗口显示/隐藏
-            dialogFormVisible4Edit: false,//控制编辑窗口显示/隐藏
-            rules: {//校验规则
-                username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
-                password: [{required: true, message: '请输入密码', trigger: 'blur'}]
-            }
+            dialogFormVisible4Edit: false//控制编辑窗口显示/隐藏
         },
         created() {
             this.findPage();
         },
         methods: {
             // 删除
-            handleDelete(row) {
+            handleDelete(row){
                 // 套餐的id
                 var id = row.id;
                 this.$confirm('此操作将【永久删除】该套餐, 是否继续?', '提示', {
@@ -342,9 +335,9 @@
                     axios.get('/Yh/deleteYhById.do?id=' + id).then(res => {
                         this.$message({
                             message: res.data.message,
-                            type: res.data.flag ? "success" : "error"
+                            type: res.data.flag?"success":"error"
                         });
-                        if (res.data.flag) {
+                        if(res.data.flag){
                             this.findPage();
                         }
                     })
@@ -353,7 +346,7 @@
                 });
             },
             // 弹出编辑窗口
-            handleUpdate(row) {
+            handleUpdate(row){
                 var id = row.id; // 套餐的id
                 // 弹出编辑窗口
                 this.dialogFormVisible4Edit = true;
@@ -370,43 +363,43 @@
                             }
                         }
                      */
-                    if (res.data.flag) {
+                    if(res.data.flag){
                         // 套餐信息回显
                         this.formData = res.data.data;
                         // 图片回显
                         // this.imageUrl = res.data.data.domain + this.formData.img;
                         // 加载检查组列表数据
                         axios.get('/Yh/findAll.do').then(res1 => {
-                            if (res1.data.flag) {
+                            if(res1.data.flag){
                                 this.tableData = res1.data.data;
                                 // 加载选中的检查组id
                                 axios.get("/Yh/findRoleIdsByUserId.do?id=" + id).then(res2 => {
-                                    if (res2.data.flag) {
+                                    if(res2.data.flag){
                                         this.checkgroupIds = res2.data.data;
-                                    } else {
+                                    }else{
                                         this.$message.error(res2.data.message);
                                     }
                                 })
-                            } else {
+                            }else{
                                 this.$message.error(res1.data.message);
                             }
                         })
 
-                    } else {
+                    }else{
                         this.$message.error(res.data.message);
                     }
 
                 })
             },
             // 编辑窗口的确定
-            handleEdit() {
+            handleEdit(){
                 //alert("编辑的提交");
                 axios.post('/Yh/update.do?checkgroupIds=' + this.checkgroupIds, this.formData).then(res => {
                     this.$message({
                         message: res.data.message,
-                        type: res.data.flag ? "success" : "error"
+                        type: res.data.flag?"success":"error"
                     });
-                    if (res.data.flag) {
+                    if(res.data.flag){
                         // 关闭编辑窗口
                         this.dialogFormVisible4Edit = false;
                         // 刷新列表数据
@@ -448,30 +441,26 @@
             },
             //添加
             handleAdd() {
-                this.$refs["formData"].validate((valid) => {
-                    if (valid) {
-                        axios.post('/Yh/add.do?checkgroupIds=' + this.checkgroupIds, this.formData).then(res => {
-                            this.$message({
-                                message: res.data.message,
-                                type: res.data.flag ? "success" : "error"
-                            });
-                            if (res.data.flag) {
-                                // 关闭新增的窗口
-                                this.dialogFormVisible = false;
-                                this.findPage();
-                            }
-                        })
+                axios.post('/Yh/add.do?checkgroupIds=' + this.checkgroupIds, this.formData).then(res => {
+                    this.$message({
+                        message: res.data.message,
+                        type: res.data.flag?"success":"error"
+                    });
+                    if(res.data.flag){
+                        // 关闭新增的窗口
+                        this.dialogFormVisible = false;
+                        this.findPage();
                     }
-                });
+                })
             },
 
             //分页查询
             findPage() {
-                axios.post('/Yh/findYh.do', this.pagination).then(res => {
-                    if (res.data.flag) {
+                axios.post('/Yh/findYh.do',this.pagination).then(res => {
+                    if(res.data.flag){
                         this.pagination.total = res.data.data.total;
                         this.dataList = res.data.data.rows;
-                    } else {
+                    }else {
                         this.$message.error(res.data.message);
                     }
                 })
@@ -488,9 +477,6 @@
                 this.tableData = [];
                 // 清空选中的检查组
                 this.checkgroupIds = [];
-                if (this.$refs["formData"] !== undefined) {
-                    this.$refs["formData"].resetFields();
-                }
             },
             // 弹出添加窗口
             handleCreate() {
@@ -500,9 +486,9 @@
                 this.resetForm();
                 // 加载检查组列表数据
                 axios.get('/Yh/findAll.do').then(res => {
-                    if (res.data.flag) {
+                    if(res.data.flag){
                         this.tableData = res.data.data;
-                    } else {
+                    }else{
                         this.$message.error(res.data.message);
                     }
                 })
